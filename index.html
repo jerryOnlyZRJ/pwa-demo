@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>基于PWA的渐进式应用</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+    <img src="./images/kebi.jpg" width="360px" />
+
+    <script src="./js/index.js"></script>
+    <script>
+        const w = new Worker('myworker.js');
+        w.postMessage('Hi, Web Worker.');
+        w.onmessage = function (message) {
+            console.log(message.data);
+        }
+        if ("ServiceWorker" in window) {
+            console.log('当前控制权', navigator.serviceWorker.controller);
+            // register 方法的 scope 参数是可选的，用于指定你想让 Service Worker 控制的内容的子目录
+            navigator.serviceWorker.register("/sw.js", {
+                    scope: '/'
+                })
+                .then(function (registration) {
+                    console.log("serviceWorker注册成功，范围", registration.scope);
+                }).catch(function (err) {
+                    console.log("serviceWorker注册失败 : ", err);
+                })
+        }
+    </script>
+</body>
+
+</html>
